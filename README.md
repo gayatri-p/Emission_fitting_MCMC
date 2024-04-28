@@ -4,7 +4,7 @@ In general, the code will run in two steps. First, the code will read in the fil
 The code largely runs through two separate scripts which perform the two relevant tasks with associated command-line arguments.
 In the first step, after cloning this repo one can run something like this to get a feel for the data/potential best-fitting model
 
-'''
-python3 Reading_in.py -z 0.01 --correction 0.023 -pm 500 -wavelength 5000
-'''
-This would read in the data and find the emission profile at 5000 \AA
+```
+python3 Reading_in.py SN2020ywx.txt -z 0.01 --correction 0.023 -pm 500 -wavelength 5000
+```
+This would read in the data and find the emission profile at 5000 \AA, plotting the continuum-subtracted resulting profile in velocity space given a redshift and extinction correction as well as a buffer of 500 \AA around the central wavelength
