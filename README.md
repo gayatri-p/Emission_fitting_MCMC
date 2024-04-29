@@ -6,7 +6,7 @@ The code largely runs through two separate scripts which perform the two relevan
 In the first step, after cloning this repo one can run something like this to get a feel for the data/potential best-fitting model
 
 ```
-python3 Reading_in.py SN2020ywx.txt -z 0.01 --correction 0.023 -pm 500 -wavelength 5000
+python3 Reading_in.py SN2020ywx.txt -z 0.01 --correction 0.023 --pm 500 --wavelength 6563
 ```
 The file must be in one of a couple possble formats:
 * ascii file with the first column wavelenghth(in /AA) and second column flux(and ideally third column error)
