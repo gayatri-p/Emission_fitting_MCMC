@@ -9,7 +9,7 @@ In the first step, after cloning this repo one can run something like this to ge
 python3 Reading_in.py SN2020ywx.txt -z 0.01 --correction 0.023 -pm 500 -wavelength 5000
 ```
 The file must be in one of a couple possble formats:
-*ascii file with the first column wavelenghth(in /AA) and second column flux(and ideally third column error)
+*ascii file with the first column wavelenghth(in /AA) and second column flux(and ideally third column error)*
 *similarly-formatted csv file
 *fits file with the first extension containing a fits file with one data extensioon and one flux extension
 This would read in the data and find the emission profile at 5000 \AA, plotting the continuum-subtracted resulting profile in velocity space given a redshift and extinction correction as well as a buffer of 500 \AA around the central wavelength
