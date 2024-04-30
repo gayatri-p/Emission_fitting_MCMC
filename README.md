@@ -14,7 +14,7 @@ The file must be in one of a couple possble formats:
 * fits file with the first extension containing a fits file with one data extensioon and one flux extension
 
 This would read in the data and find the emission profile at 5000 \AA, plotting the continuum-subtracted resulting profile in velocity space given a redshift and extinction correction as well as a buffer of 500 \AA around the central wavelength
-Adter running this, the code will output a potential guess. If that guess seems incorrect, you can re-run the Reading_in.py script with your own guess to check whether that gives a decent fit with least squares analysis. The code will output a $\chi^2$, assuming you give it error in the third column of your data. It otherwise assumes 10 % error on the flux.
+Adter running this, the code will output a potential guess. If that guess seems incorrect, you can re-run the Reading_in.py script with your own guess to check whether that gives a decent fit with least squares analysis. The code will output a $\chi^2$, assuming you give it error in the third column of your data. It otherwise assumes 10 % error on the flux. In general, ensure you have some good estimate for the error(this code does not involve generating errors on your spectra as in i.e. the Silverman et al 1998 method).
 
 The guess file should just be an ascii file with the relevant number of values(i.e. 6 for a 2-gaussian fit). In the next step, you run the following command to do the fitting with MCMC(with similar command-line arguments):
 ```
