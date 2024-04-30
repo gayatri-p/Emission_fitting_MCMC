@@ -20,4 +20,4 @@ The guess file should just be an ascii file with the relevant number of values(i
 ```
 python3 Fitting_functions.py 20220311.rtf --guess guess.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
-This will output a corner plot that will save as a .png file as well as an output csv file with the final posterior distributions and errorbars(1$\sigma$).
+This will output a corner plot that will save as a .png file as well as an output csv file with the final posterior distributions and errorbars(1 $\sigma$).
