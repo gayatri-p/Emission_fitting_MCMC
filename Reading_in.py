@@ -67,7 +67,7 @@ def model_lorentzian(theta):
     a,b,c=theta
     model=(a/np.pi)*(c/((x-b)**2+c**2))
     return model
-def three_gaussian_fit( params ):#functions for least squares minimization
+def three_gaussian_fit( params ):#functions for least squares minimization for initial guesses
     fit = model_3gauss( params )
     return (fit - y)
 def two_gaussian_fit( params ):
@@ -84,8 +84,7 @@ def lorentzian_fit(params):
     return (fit - y)
 filename=args.filename
 redshift=args.redshift
-lambda_pm=args.pm
-
+lambda_pm=args.pm#setting all relevant values for reading in data
 def get_specdata(filename):
     '''
     Read in file depending on what format it is in and output wavelength/flux/error
@@ -135,7 +134,7 @@ def get_specdata(filename):
 def get_wavelength_vals(filename):
     '''
     Read out data and convert to the desired units
-    Takes in a file and gives x in velocity, y in flux(in 1e-15 ergs/s/cm2/A) and yerrors in the same unit
+    Takes in a file and gives x in velocity, y in flux(in 1e-15 ergs/s/cm2/A) and y errors in the same unit
     '''
     l,f,e=get_specdata(filename)#get lambda, flux,error from data file
     if args.continuum_sub==True:#check that continuum subtraction is desired

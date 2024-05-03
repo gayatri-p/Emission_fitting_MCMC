@@ -25,6 +25,8 @@ parser.add_argument('--continuum_sub', default=True,
                     help='Do continuum_sub')
 parser.add_argument('--plot_limits', default=10000,type=int,
                     help='Limit of plots')
+parser.add_argument('--niter', default=10000,type=int,
+                    help='number of MCMC iterations')
 parser.add_argument('--guess',help='Best guess file')
 args = parser.parse_args()
 filename=args.filename
@@ -44,7 +46,7 @@ else:
     model='l'
 def lnlike(theta, x, y, yerr):
     '''
-    log likelihood function-chi squared like'
+    log likelihood function-chi squared like-defining for different potential models'
     '''
     if model=='1g':
         lnl=-np.sum((y-r.model_1gauss(theta))**2/yerr**2)/2
@@ -54,7 +56,7 @@ def lnlike(theta, x, y, yerr):
         lnl=-np.sum((y-r.model_3gauss(theta))**2/yerr**2)/2
     elif model=='4g':
         lnl=-np.sum((y-r.model_4gauss(theta))**2/yerr**2)/2
-    else:
+    else:#if model is lorentzian
         lnl=-np.sum((y-r.model_lorentzian(theta))**2/yerr**2)/2
     return lnl
 def log_prior(theta):
@@ -105,7 +107,7 @@ def main(p0,nwalkers,niter,ndim,lnprob,data):
         return sampler, pos, prob, state
 data = (x,y,yerr)
 nwalkers=200
-niter=10000
+niter=args.niter
 ndim=len(guess)
 p0 = [np.array(guess) + 1e-7 * np.random.randn(ndim) for i in range(nwalkers)]
 sampler, pos, prob, state = main(p0,nwalkers,niter,ndim,lnprob,data)
