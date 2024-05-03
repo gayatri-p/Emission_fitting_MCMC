@@ -6,9 +6,9 @@ The code largely runs through two separate scripts which perform the two relevan
 In the first step, after cloning this repo one can run something like this to get a feel for the data/potential best-fitting model
 
 ```
-python3 Reading_in.py 20220311.rtf -z 0.01 --correction 0.023 --pm 500 --wavelength 6563
+python3 Reading_in.py demo/2020ywx_20220429.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
-The file must be in one of a couple possble formats:
+The file must be in one of a couple possble formats(ensure it is in an accessible path from wherever you are running the code):
 * ascii file with the first column wavelength(in /AA) and second column flux(and ideally third column error)
 * similarly-formatted csv file
 * fits file with the first extension containing a fits file with one data extensioon and one flux extension
@@ -18,6 +18,6 @@ After running this, the code will output a potential guess. If that guess seems 
 
 The guess file should just be an ascii file with the relevant number of values(i.e. 6 for a 2-gaussian fit).  In the next step, you run the following command to do the fitting with MCMC with whatever best guess you can generate or the first step generates(with similar command-line arguments):
 ```
-python3 Fitting_functions.py 20220311.rtf --guess guess.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
+python3 Fitting_functions.py Demo/2020ywx_20220429.txt --guess Demo/guess_0429.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
-This will output a corner plot that will save as a .png file as well as an output csv file with the final posterior distributions and errorbars($1 \sigma$).
+Update the paths for the data file and the guess according to your needs. This will output a corner plot that will save as a .png file(MCMC.png) as well as an output csv file with the final posterior distributions and upper and lower errorbars($1 \sigma$) saved as Final_results.csv.
