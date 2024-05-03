@@ -6,7 +6,7 @@ The code largely runs through two separate scripts which perform the two relevan
 In the first step, after cloning this repo one can run something like this to get a feel for the data/potential best-fitting model
 
 ```
-python3 Reading_in.py demo/2020ywx_20220429.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
+python3 Reading_in.py Demo/2020ywx_20220429.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
 The file must be in one of a couple possble formats(ensure it is in an accessible path from wherever you are running the code):
 * ascii file with the first column wavelength(in /AA) and second column flux(and ideally third column error)
@@ -16,7 +16,7 @@ The file must be in one of a couple possble formats(ensure it is in an accessibl
 This would read in the data and find the emission profile at H$\alpha$, plotting the continuum-subtracted resulting profile in velocity space given a redshift and extinction correction as well as a buffer of 500 \AA around the central wavelength for the fit region.
 After running this, the code will output a potential guess. If that guess seems incorrect, you can re-run the Reading_in.py script with your own guess to check whether that gives a decent fit with least squares analysis. The code will output a $\chi^2$, assuming you give it error in the third column of your data. It otherwise assumes 10 % error on the flux. In general, ensure you have some good estimate for the error(this code does not involve generating errors on your spectra as in i.e. the Silverman et al 1998 method).
 
-The guess file should just be an ascii file with the relevant number of values(i.e. 6 for a 2-gaussian fit).  In the next step, you run the following command to do the fitting with MCMC with whatever best guess you can generate or the first step generates(with similar command-line arguments):
+The guess file should just be an ascii file with the relevant number of values(i.e. 6 for a 2-gaussian fit).  In the next step, you run the following command to do the fitting with MCMC with whatever best guess you can generate or the first step generates(with otherwise similar command-line arguments to the first step):
 ```
 python3 Fitting_functions.py Demo/2020ywx_20220429.txt --guess Demo/guess_0429.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
