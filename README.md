@@ -24,6 +24,8 @@ The command line arguments available for modification are the following:
  
  ```--continuum_sub``` Whether you want the continuum subtracted-default True
 
+  ```--plot_limits``` Allows you to change the plot limits for a nicer view as the plots output
+
 This would read in the data and find the emission profile at H$\alpha$, plotting the continuum-subtracted resulting profile in velocity space given a redshift and extinction correction as well as a buffer of 500 \AA around the central wavelength for the fit region.
 After running this, the code will output a potential guess. If that guess seems incorrect, you can re-run the Reading_in.py script with your own guess to check whether that gives a decent fit with least squares analysis. The code will output a $\chi^2$, assuming you give it error in the third column of your data. It otherwise assumes 10 % error on the flux. In general, ensure you have some good estimate for the error(this code does not involve generating errors on your spectra as in i.e. the Silverman et al 1998 method).
 
@@ -33,6 +35,8 @@ python3 Fitting_functions.py Demo/2020ywx_20220429.txt --guess Demo/guess_0429.t
 ```
 Update the paths for the data file and the guess according to your needs. 
 This second script takes the same command line arguments with one addition: 
+
  ```--niter``` The number of MCMC iterations you want to run. Could be modified given some strange behavior of the chains.
- The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. 
+
+The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. 
 This will output a corner plot that will save as a .png file(MCMC.png) as well as an output csv file with the final posterior distributions and upper and lower errorbars($1 \sigma$) saved as Final_results.csv.
