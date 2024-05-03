@@ -8,7 +8,8 @@ In the first step, after cloning this repo one can run something like this to ge
 ```
 python3 Reading_in.py Demo/2020ywx_20220429.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
-The file must be in one of a couple possble formats(ensure it is in an accessible path from wherever you are running the code):
+The potential command line arguments are the following:
+```filename```-The file must be in one of a couple possble formats(ensure it is in an accessible path from wherever you are running the code):
 * ascii file with the first column wavelength(in /AA) and second column flux(and ideally third column error)
 * similarly-formatted csv file
 * fits file with the first extension containing a fits file with one data extensioon and one flux extension
