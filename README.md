@@ -39,5 +39,5 @@ This second script takes the same command line arguments with one addition:
 
  ```--niter``` The number of MCMC iterations you want to run. Could be modified given some strange behavior of the chains.
 
-The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. 
+The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. THe code should taken <30 seconds to run with the defaults in place.
 This will output a corner plot that will save as a .png file(MCMC.png) as well as an output csv file with the final posterior distributions and upper and lower errorbars($1 \sigma$) saved as Final_results.csv.
