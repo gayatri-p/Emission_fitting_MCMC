@@ -13,10 +13,15 @@ The command line arguments available for modification are the following:
 * ascii file with the first column wavelength(in /AA) and second column flux(and ideally third column error)
 * similarly-formatted csv file
 * fits file with the first extension containing a fits file with one data extensioon and one flux extension
+
  ```-z```-The redshift of the object.
+ 
  ```--correction```-The dust correction E(B-V) of the object(often inferred from the Sodium Doublet)
+ 
  ```--pm```- The plus or minus wavelength range over which to define the fitting region
+ 
  ```--wavelength``` The central wavelength of the line you want to analyze/fit profiles to
+ 
  ```--continuum_sub``` Whether you want the continuum subtracted-default True
 
 This would read in the data and find the emission profile at H$\alpha$, plotting the continuum-subtracted resulting profile in velocity space given a redshift and extinction correction as well as a buffer of 500 \AA around the central wavelength for the fit region.
