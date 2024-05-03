@@ -19,6 +19,12 @@ parser.add_argument('--pm', default=0,type=float,
                     help='Range from rest wavelength over which to perform fitting')
 parser.add_argument('--wavelength', default=0,type=float,
                     help='Rest wavelength of line')
+parser.add_argument('--lorentzian', default=False,
+                    help='Input True if Lorentzian guess')
+parser.add_argument('--continuum_sub', default=True,
+                    help='Do continuum_sub')
+parser.add_argument('--plot_limits', default=10000,type=int,
+                    help='Limit of plots')
 parser.add_argument('--guess',help='Best guess file')
 args = parser.parse_args()
 filename=args.filename
@@ -32,30 +38,38 @@ elif len(guess)==9:
     model='3g'
 elif len(guess)==12:
     model='4g'
-elif len(guess)==3 and sys.argv[7]!='L':
+elif len(guess)==3 and args.lorentzian==False:
     model='1g'
 else:
     model='l'
 def lnlike(theta, x, y, yerr):
-        if model=='1g':
-            lnl=-np.sum((y-r.model_1gauss(theta))**2/yerr**2)/2
-        elif model=='2g':
-            lnl=-np.sum((y-r.model_2gauss(theta))**2/yerr**2)/2
-        elif model=='3g':
-            lnl=-np.sum((y-r.model_3gauss(theta))**2/yerr**2)/2
-        elif model=='4g':
-            lnl=-np.sum((y-r.model_4gauss(theta))**2/yerr**2)/2
-        return lnl
+    '''
+    log likelihood function-chi squared like'
+    '''
+    if model=='1g':
+        lnl=-np.sum((y-r.model_1gauss(theta))**2/yerr**2)/2
+    elif model=='2g':
+        lnl=-np.sum((y-r.model_2gauss(theta))**2/yerr**2)/2
+    elif model=='3g':
+        lnl=-np.sum((y-r.model_3gauss(theta))**2/yerr**2)/2
+    elif model=='4g':
+        lnl=-np.sum((y-r.model_4gauss(theta))**2/yerr**2)/2
+    else:
+        lnl=-np.sum((y-r.model_lorentzian(theta))**2/yerr**2)/2
+    return lnl
 def log_prior(theta):
+        '''
+        Find the log prior based on guess and model
+        '''
         if model=='2g':
             a,b,c,d,e,f= theta
             a0,b0,c0,d0,e0,f0=abs(guess)
-            if -4*a0<a<4*a0 and -4*b0<b<4*b0 and -4*c0<c<4*c0 and -4*d0<d<4*d0 and -4*e0<e<4*e0 and -4*f0<f<4*f0:
+            if -5*a0<a<5*a0 and -5*b0<b<5*b0 and -5*c0<c<5*c0 and -5*d0<d<5*d0 and -5*e0<e<5*e0 and -5*f0<f<5*f0:
                 return 0.0
         elif model=='1g':
             a,b,c= theta
             a0,b0,c0=guess
-            if -4*abs(a0)<a<4*abs(a0) and -4*abs(b0)<b<4*abs(b0) and -4*abs(c0)<c<4*abs(c0):
+            if -5*abs(a0)<a<5*abs(a0) and -5*abs(b0)<b<5*abs(b0) and -5*abs(c0)<c<5*abs(c0):
                 return 0.0
         elif model=='l':
             a,b,c= theta
@@ -65,12 +79,12 @@ def log_prior(theta):
         elif model=='3g':
             a,b,c,d,e,f,g,h,i= theta
             a0,b0,c0,d0,e0,f0,g0,h0,i0= guess
-            if--4*a0<a<4*a0 and -4*b0<b<4*b0 and -4*c0<c<4*c0 and -4*d0<d<4*d0 and -4*e0<e<4*e0 and -4*f0<f<4*f0 and -4*g0<g<4*g0 and -4*h0<h<4*h0 and -4*i0<i<4*i0:
+            if--5*a0<a<5*a0 and -5*b0<b<5*b0 and -5*c0<c<5*c0 and -5*d0<d<5*d0 and -5*e0<e<5*e0 and -5*f0<f<5*f0 and -5*g0<g<5*g0 and -5*h0<h<5*h0 and -5*i0<i<5*i0:
                 return 0.0
         elif model=='4g':
             a,b,c,d,e,f,g,h,i,j,k,l= theta
             a0,b0,c0,d0,e0,f0,g0,h0,i0,j0,k0,l0=abs(guess)
-            if -4*a0<a<4*a0 and -4*b0<b<4*b0 and -4*c0<c<4*c0 and -4*d0<d<4*d0 and -4*e0<e<4*e0 and -4*f0<f<4*f0 and -4*g0<g<4*g0 and -4*h0<h<4*h0 and -4*i0<i<4*i0 and -4*j0<j<4*j0 and -4*k0<k<4*k0 and -4*l0<l<4*l0:  
+            if -5*a0<a<5*a0 and -5*b0<b<5*b0 and -5*c0<c<5*c0 and -5*d0<d<5*d0 and -5*e0<e<5*e0 and -5*f0<f<5*f0 and -5*g0<g<5*g0 and -5*h0<h<5*h0 and -5*i0<i<5*i0 and -5*j0<j<5*j0 and -5*k0<k<5*k0 and -5*l0<l<5*l0:  
                 return 0.0
         return -np.inf
 def lnprob(theta, x,y,yerr):
@@ -99,7 +113,7 @@ samples=sampler.flatchain
 tau = sampler.get_autocorr_time()
 for i in range(len(tau)):
     if 40*tau[i]<niter:
-        print('The chains converged for parameter {}'.format{i})
+        print('The chains converged for parameter',i+1)
     else:
         print('Convergence failed')
 theta=samples[np.argmax(sampler.flatlnprobability)]
@@ -110,20 +124,22 @@ plt.show()
 def plotting(model):
     if model=='2g':
         plt.plot(x,r.model_2gauss(theta),color='blue')
-        #print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-model_2gauss(theta))**2/(yerr**2)))
+        print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_2gauss(theta))**2/(yerr**2)))
     elif model=='3g':
         plt.plot(x,r.model_3gauss(theta),color='blue')
-        #print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-model_3gauss(theta))**2/(yerr**2)))
+        print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_3gauss(theta))**2/(yerr**2)))
     elif model=='1g':
         plt.plot(x,r.model_1gauss(theta),color='blue')
-        #print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-model_1gauss(theta))**2/(yerr**2)))
+        print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_1gauss(theta))**2/(yerr**2)))
     elif model=='4g':
         plt.plot(x,r.model_4gauss(theta),color='blue')
-        #print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-model_4gauss(theta))**2/(yerr**2)))
+        print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_4gauss(theta))**2/(yerr**2)))
     elif model=='l':
-        plt.plot(x,r.model_lorentizan(theta),color='blue')
-        #print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-model_lorentzian(theta))**2/(yerr**2)))
+        plt.plot(x,r.model_lorentzian(theta),color='blue')
+        print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_lorentzian(theta))**2/(yerr**2)))
     plt.plot(x,y,color='black',alpha=0.5)
+    plt.xlabel('Velocity(km/s)')
+    plt.ylabel('Flux')
     #plt.xlim(-10000,10000)
     plt.savefig('Fitted.png')
     plt.show()
