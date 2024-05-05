@@ -90,40 +90,42 @@ def log_prior(theta):
                 return 0.0
         return -np.inf
 def lnprob(theta, x,y,yerr):
+    '''
+    find maximimum likelihood-but only within prior bounds
+    '''
     lp = log_prior(theta)
     if not np.isfinite(lp):
         return -np.inf
     return lp + lnlike(theta, x, y, yerr) #recall if lp not -inf, its 0, so this just returns likelihood
 def main(p0,nwalkers,niter,ndim,lnprob,data):
-        sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=data)
-
-        print("Running burn-in...")
-        p0, _, _ = sampler.run_mcmc(p0,4000)
-        sampler.reset()
-    
-        print("Running production...")
-        pos, prob, state = sampler.run_mcmc(p0, niter)
-
-        return sampler, pos, prob, state
+    '''
+    running mcmc with set burn in, walkers and iterations
+    '''
+    sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=data)
+    print("Running burn-in...")
+    p0, _, _ = sampler.run_mcmc(p0,1000)
+    sampler.reset()
+    print("Running production...")
+    pos, prob, state = sampler.run_mcmc(p0, niter)
+    return sampler, pos, prob, state
 data = (x,y,yerr)
 nwalkers=200
 niter=args.niter
 ndim=len(guess)
 p0 = [np.array(guess) + 1e-7 * np.random.randn(ndim) for i in range(nwalkers)]
 sampler, pos, prob, state = main(p0,nwalkers,niter,ndim,lnprob,data)
-samples=sampler.flatchain
-tau = sampler.get_autocorr_time()
+samples=sampler.flatchain#get the final samples
+tau = sampler.get_autocorr_time()# get autocorrelation times
 for i in range(len(tau)):
     if 40*tau[i]<niter:
         print('The chains converged for parameter',i+1)
     else:
         print('Convergence failed')
-theta=samples[np.argmax(sampler.flatlnprobability)]
-labels=['a','b','c','d','e','f','g','h','i','j','k','l']
-corner.corner(samples,show_titles=True,labels=labels,plot_datapoints=True,quantiles=[0.16, 0.5, 0.84],title_fmt='.3f')
-plt.savefig('MCMC.png',format='png')
-plt.show()
+theta=samples[np.argmax(sampler.flatlnprobability)]#get samples at min likelihood"
 def plotting(model):
+    '''
+    final plotting and read-out based on the preferred model set by the length of the guess
+    '''
     if model=='2g':
         plt.plot(x,r.model_2gauss(theta),color='blue')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_2gauss(theta))**2/(yerr**2)))
@@ -145,7 +147,11 @@ def plotting(model):
     #plt.xlim(-10000,10000)
     plt.savefig('Fitted.png')
     plt.show()
-if model=='4g':
+if model=='4g':#read out final results based on preferred model-first check if model is 4-gaussian
+    labels=['$A_{1}$','$\\mu_{1}$','$\\sigma_{1}$','$A_{2}$','$\\mu_{2}$','$\\sigma_{2}$','$A_{3}$','$\\mu_{3}$','$\\sigma_{3}$','$A_{4}$','$\\mu_{4}$','$\\sigma_{4}$']
+    corner.corner(samples,show_titles=True,labels=labels,plot_datapoints=True,quantiles=[0.16, 0.5, 0.84],title_fmt='.3f')
+    plt.savefig('MCMC.png',format='png')
+    plt.show()
     flat_samples = sampler.get_chain(discard=100, thin=15, flat=True)
     df=pd.DataFrame(columns=['Comp1_Amp','Comp1_Center','Comp1_SD','Comp2_Amp','Comp2_Center','Comp2_SD','Comp3_Amp','Comp3_Center','Comp3_SD','Comp4_Amp','Comp4_Center','Comp4_SD'])
     for i in range(ndim):
@@ -178,7 +184,11 @@ if model=='4g':
         if i==11:
             df['Comp4_SD']=[txt]
     df.to_csv('Final Results.csv')
-if model=='3g':
+if model=='3g':#if model is 3-gaussian 
+    labels=['$A_{1}$','$\\mu_{1}$','$\\sigma_{1}$','$A_{2}$','$\\mu_{2}$','$\\sigma_{2}$','$A_{3}$','$\\mu_{3}$','$\\sigma_{3}$']
+    corner.corner(samples,show_titles=True,labels=labels,plot_datapoints=True,quantiles=[0.16, 0.5, 0.84],title_fmt='.3f')
+    plt.savefig('MCMC.png',format='png')
+    plt.show()
     flat_samples = sampler.get_chain(discard=100, thin=15, flat=True)
     df=pd.DataFrame(columns=['Comp1_Amp','Comp1_Center','Comp1_SD','Comp2_Amp','Comp2_Center','Comp2_SD','Comp3_Amp','Comp3_Center','Comp3_SD','Comp4_Amp','Comp4_Center','Comp4_SD'])
     ndim=len(guess)
@@ -206,7 +216,11 @@ if model=='3g':
         if i==8:
             df['Comp3_SD']=[txt]
     df.to_csv('Final Results.csv')
-if model=='1g':
+if model=='1g':#if model is 1-gaussian
+    labels=['$A_{1}$','$\\mu_{1}$','$\\sigma_{1}$']
+    corner.corner(samples,show_titles=True,labels=labels,plot_datapoints=True,quantiles=[0.16, 0.5, 0.84],title_fmt='.3f')
+    plt.savefig('MCMC.png',format='png')
+    plt.show()
     flat_samples = sampler.get_chain(discard=100, thin=15, flat=True)
     df=pd.DataFrame(columns=['Comp1_Amp','Comp1_Center','Comp1_SD'])
     for i in range(ndim):
@@ -221,7 +235,11 @@ if model=='1g':
         if i==2:
             df['Comp1_SD']=[txt]
     df.to_csv('Final Results.csv')
-if model=='2g':
+if model=='2g':#if model is 2-gaussian
+    labels=['$A_{1}$','$\\mu_{1}$','$\\sigma_{1}$','$A_{2}$','$\\mu_{2}$','$\\sigma_{2}$']
+    corner.corner(samples,show_titles=True,labels=labels,plot_datapoints=True,quantiles=[0.16, 0.5, 0.84],title_fmt='.3f')
+    plt.savefig('MCMC.png',format='png')
+    plt.show()
     flat_samples = sampler.get_chain(discard=100, thin=15, flat=True)
     df=pd.DataFrame(columns=['Comp1_Amp','Comp1_Center','Comp1_SD','Comp2_Amp','Comp2_Center','Comp2_SD'])
     for i in range(ndim):
@@ -242,7 +260,11 @@ if model=='2g':
         if i==5:
             df['Comp2_SD']=[txt]
     df.to_csv('Final Results.csv')
-if model=='l':
+if model=='l':#if model is lorentzian
+    labels=['a','b','c']
+    corner.corner(samples,show_titles=True,labels=labels,plot_datapoints=True,quantiles=[0.16, 0.5, 0.84],title_fmt='.3f')
+    plt.savefig('MCMC.png',format='png')
+    plt.show()
     flat_samples = sampler.get_chain(discard=100, thin=15, flat=True)
     df=pd.DataFrame(columns=['Amp','Center','Width'])
     for i in range(ndim):
@@ -257,4 +279,4 @@ if model=='l':
         if i==2:
             df['Width']=[txt]
     df.to_csv('Final Results.csv')
-plotting(model)    
+plotting(model) #call plotting function to output results after saving results above
