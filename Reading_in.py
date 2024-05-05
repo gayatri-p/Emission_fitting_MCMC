@@ -96,7 +96,7 @@ def get_specdata(filename):
         dim=np.shape(data)[1]
         if dim>2:
             error=data[:,2]
-        else:
+        else:#if no error in data
             error=0.1*flux
     elif filename[-4:]=='fits':# check fits files
         f = fits.open(filename)  
@@ -106,7 +106,7 @@ def get_specdata(filename):
             flux=specdata[1]
             if len(specdata)==3:
                 error=specdata[2]
-            else:
+            else:#if no error in data
                 error=flux*0.1
         else:#more abnormal fits files
             data = f[0].data
@@ -120,7 +120,7 @@ def get_specdata(filename):
             if len(data)>5:
                 error=data[1]
             else:
-                error=0.05*flux #allows for quick look at the data
+                error=0.05*flux #if no error in data
     elif filename[-3:]=='csv':#check csv files
         data=pd.read_csv(filename)
         wavelength=np.empty(0)
@@ -177,7 +177,6 @@ if args.guess is None:# if theres no guess lets try everything
     chi5=1/(len(y)-len(fitl[0]))*sum((y-model_lorentzian(fitl[0]))**2/e**2)
     chi_array=np.array([chi1,chi2,chi3,chi4,chi5])
     min_chisq=min(chi_array)# check greater than 1 assuming you have good errors-which you should!
-    #print('Minimum chi squared with rough guess', min_chisq)
     if np.argmin(chi_array)==0:
         print("Our initial least squares guess is a 1 component gaussian with parameters:",fit1[0])
         plt.plot(x,model_1gauss(fit1[0]),color='r')
