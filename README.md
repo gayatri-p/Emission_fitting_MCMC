@@ -14,7 +14,7 @@ The command line arguments available for modification in the first step are the 
 ```filename```-The name of the file input. The file must be in one of a couple possble formats(ensure it is in an accessible path from wherever you are running the code):
 * ascii file with the first column wavelength(in /AA) and second column flux(and ideally third column error)
 * similarly-formatted csv file
-* fits file with the first extension containing a fits file with one data extensioon and one flux extension
+* fits file with the first extension containing a fits file with associated wavelength, flux and error array
 
  ```-z```-The redshift of the object.
  
@@ -38,5 +38,5 @@ This script will run through the first script as well as it uses functions from 
 
  ```--niter``` The number of MCMC iterations you want to run. Defaults to 10000. Could be modified given some strange behavior of the chains.
 
-The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. The code should take <30 seconds to run.
+The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. The code should take <30 seconds to run. The MCMC corner plot will show if you have matplotlib widget, but it should be easier to look at this through the output .png file.
 This will output a corner plot that will save as a .png file(MCMC.png) as well as an output csv file with the final posterior distributions and upper and lower errorbars($\pm 1 \sigma$) saved as Final_results.csv. 
