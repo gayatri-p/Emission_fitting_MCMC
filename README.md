@@ -5,7 +5,7 @@ In general, the code will run in two steps. First, the code will read in the fil
 
 In the second step, the MCMC chains are run. In this step, the priors will be set by the guess, and the MCMC chains will be run with default 200 parallelized walkers and 10000 iterations, with a 1000 step burn-in. The final results will be plotted in a corner plot with 1 $\sigma$ errors, and the full values are output to a csv file.
 The code runs through two separate scripts which perform the two relevant tasks using associated command-line arguments.
-To properly run everything, you should have python for the command line install the following non-standard libraries/modules:
+To properly run everything, you should have python for the command line install the following non-standard python libraries/modules:
 ```
 pip install emcee
 pip install astropy
@@ -50,4 +50,5 @@ python3 Fitting_functions.py Demo/2020ywx_20220202.txt --guess Demo/guess_0202.t
  ```--niter``` The number of MCMC iterations you want to run. Defaults to 10000. Could be modified given some strange behavior of the chains.
 
 The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. The code should take ~ <2 minutes to run. An MCMC corner plot will show in the python window if you have the matplotlib widget, but it should be easier to look at this through the output .png file.
-The final outputs are a corner plot that will save as a .png file(MCMC.png) as well as a csv file with the final posterior distributions and upper and lower errorbars($\pm 1 \sigma$) saved as Final_results.csv.  The reduced $\\chi^2$ will also be output which one can use as a guide to perhaps consider a different model(which you could set by inputting a different guess).
+The final outputs are a corner plot that will save as a .png file(MCMC.png) as well as a csv file with the final posterior distributions and upper and lower errorbars($\pm 1 \sigma$) saved as Final_results.csv.  The reduced $\\chi^2$ will also be output which one can use as a guide to perhaps consider a different model(which you could set by inputting a different guess). 
+To view some tests/familiarize yourself with the code further, check out the Wiki.
