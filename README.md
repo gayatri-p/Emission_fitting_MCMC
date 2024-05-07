@@ -5,7 +5,14 @@ In general, the code will run in two steps. First, the code will read in the fil
 
 In the second step, the MCMC chains are run. In this step, the priors will be set by the guess, and the MCMC chains will be run with default 200 parallelized walkers and 10000 iterations, with a 1000 step burn-in. The final results will be plotted in a corner plot with 1 $\sigma$ errors, and the full values are output to a csv file.
 The code runs through two separate scripts which perform the two relevant tasks using associated command-line arguments.
-In the first step, you can run something like this to get a feel for the data/potential best-fitting model
+To properly run everything, you should have python for the command line install the following non-standard libraries/modules:
+```
+pip install emcee
+pip install astropy
+pip install corner
+pip install dust_extinction
+```
+In the first step, you can run something like this from the command line to get a feel for the data/potential best-fitting model
 
 ```
 python3 Reading_in.py Demo/2020ywx_20220202.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
@@ -38,7 +45,7 @@ In the next step, you run the following command to do the fitting with MCMC with
 ```
 python3 Fitting_functions.py Demo/2020ywx_20220202.txt --guess Demo/guess_0202.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
-This script will run through the first script as well as it uses functions from this, so you can quit before the MCMC run if something looks off. This second script takes the same command line arguments with one addition: 
+\textbf{This step requires a guess to run}. This script will run through the first script as well as it uses functions from this, so you can quit before the MCMC run if something looks off. This second script takes the same command line arguments with one addition: 
 
  ```--niter``` The number of MCMC iterations you want to run. Defaults to 10000. Could be modified given some strange behavior of the chains.
 
