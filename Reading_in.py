@@ -35,6 +35,10 @@ args = parser.parse_args()
 def model_4gauss(theta):
     '''
     Fit 4 Gaussian model
+    Inputs:
+    Parameters
+    Outputs:
+    4-gaussian Model
     '''
     a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12 = theta
     model = a1*np.exp(-(x-a2)**2/(2*a3**2))+a4*np.exp(-(x-a5)**2/(2*a6**2))+a7*np.exp(-(x-a8)**2/(2*a9**2))+a10*np.exp(-(x-a11)**2/(2*a12**2))
@@ -42,6 +46,10 @@ def model_4gauss(theta):
 def model_3gauss(theta):
     '''
     Fit 3 Gaussian model
+    Inputs:
+    Parameters
+    Outputs:
+    3-gaussian Model
     '''
     a1,a2,a3,a4,a5,a6,a7,a8,a9 = theta
     model = a1*np.exp(-(x-a2)**2/(2*a3**2))+a4*np.exp(-(x-a5)**2/(2*a6**2))+a7*np.exp(-(x-a8)**2/(2*a9**2))
@@ -49,6 +57,10 @@ def model_3gauss(theta):
 def model_2gauss(theta):
     '''
     Fit 2 Gaussian model
+    Inputs:
+    Parameters
+    Outputs:
+    2-gaussian Model
     '''
     a1,a2,a3,a4,a5,a6= theta
     model = a1*np.exp(-(x-a2)**2/(2*a3**2))+a4*np.exp(-(x-a5)**2/(2*a6**2))
@@ -56,6 +68,10 @@ def model_2gauss(theta):
 def model_1gauss(theta):
     '''
     Fit 1 Gaussian model
+    Inputs:
+    Parameters
+    Outputs:
+    1-gaussian Model
     '''
     a1,a2,a3 = theta
     model = a1*np.exp(-(x-a2)**2/(2*a3**2))
@@ -63,23 +79,62 @@ def model_1gauss(theta):
 def model_lorentzian(theta):
     '''
     Fit Lorentzian model
+    Inputs:
+    Parameters
+    Outputs:
+    Lorentzian Model
     '''
     a,b,c=theta
     model=(a/np.pi)*(c/((x-b)**2+c**2))
     return model
 def three_gaussian_fit( params ):#functions for least squares minimization for initial guesses
+    '''
+    Least Squares 3-gauss minimization function
+    Inputs:
+    Fit Parameters
+    Outputs:
+    Fit-y
+    '''
     fit = model_3gauss( params )
     return (fit - y)
 def two_gaussian_fit( params ):
+    '''
+    Least Squares 2-gauss minimization function
+    Inputs:
+    Fit Parameters
+    Outputs:
+    Fit-y
+    '''
     fit = model_2gauss(params )
     return (fit - y)
 def one_gaussian_fit( params ):
+    '''
+    Least Squares 1-gauss minimization function
+    Inputs:
+    Fit Parameters
+    Outputs:
+    Fit-y
+    '''
     fit= model_1gauss(params )
     return (fit - y)
 def four_gaussian_fit( params ):
+    '''
+    Least Squares 4-gauss minimization function
+    Inputs:
+    Fit Parameters
+    Outputs:
+    Fit-y
+    '''
     fit = model_4gauss(params )
     return (fit - y)
 def lorentzian_fit(params):
+    '''
+    Least Squares lorentzian minimization function
+    Inputs:
+    Fit Parameters
+    Outputs:
+    Fit-y
+    '''
     fit = model_lorentzian(params)
     return (fit - y)
 filename=args.filename
@@ -88,6 +143,10 @@ lambda_pm=args.pm#setting all relevant values for reading in data
 def get_specdata(filename):
     '''
     Read in file depending on what format it is in and output wavelength/flux/error
+    Inputs:
+    File in format ascii,csv,fits file
+    Output:
+    wavelength,flux,error arrays-error assumed to be 0.1*flux if not supplied
     '''
     if filename[-3:]=='rtf' or filename[-5:]=='ascii' or filename[-3:]=='txt' or filename[-3:]=='dat':#check txt/ascii files first
         data=np.loadtxt(filename)
@@ -135,8 +194,13 @@ def get_wavelength_vals(filename):
     '''
     Read out data and convert to the desired units
     Takes in a file and gives x in velocity, y in flux(in 1e-15 ergs/s/cm2/A) and y errors in the same unit
+    Inputs:
+    Spectral File
+    Outputs:
+    Velocity,continuum-subtracted flux,flux error
     '''
-    l,f,e=get_specdata(filename)#get lambda, flux,error from data file
+    l,f,e=get_specdata(filename)
+    #get lambda, flux,error from data file
     if args.continuum_sub==True:#check that continuum subtraction is desired
         Rv=3.1
         Ebv=args.correction
@@ -155,13 +219,13 @@ def get_wavelength_vals(filename):
         yerr=e[np.where((l>line_value-lambda_pm)&(l<line_value+lambda_pm))]
         if abs(np.median(y))>0.01:
             y-=np.median(y)
-    elif args.continuum_sub==False:
+        if abs(np.mean(y))<1e-10:
+            y*=1e15#normalize to classic spectroscopy units to make fitting easier
+            yerr*=1e15
+    else:
         x=l
         y=f
         yerr=e
-    if abs(np.mean(y))<1e-10:
-        y*=1e15#normalize to classic spectroscopy units to make fitting easier
-        yerr*=1e15
     return x,y,yerr    
 x,y,e=get_wavelength_vals(filename)
 if args.guess is None:# if theres no guess lets try everything

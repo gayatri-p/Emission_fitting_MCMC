@@ -47,6 +47,10 @@ else:
 def lnlike(theta, x, y, yerr):
     '''
     log likelihood function-chi squared like-defining for different potential models'
+    Inputs:
+    parameters,x,y,yerr
+    Outputs:
+    Log Likelihood depending on preferred model
     '''
     if model=='1g':
         lnl=-np.sum((y-r.model_1gauss(theta))**2/yerr**2)/2
@@ -62,6 +66,10 @@ def lnlike(theta, x, y, yerr):
 def log_prior(theta):
         '''
         Find the log prior based on guess and model
+        Inputs:
+        Parameters
+        Outputs:
+        log prior-set the priors properly given +/- 5*guess buffers
         '''
         if model=='2g':
             a,b,c,d,e,f= theta
@@ -92,6 +100,10 @@ def log_prior(theta):
 def lnprob(theta, x,y,yerr):
     '''
     find maximimum likelihood-but only within prior bounds
+    Inputs:
+    Parameters,Data
+    Outputs:
+    Likelihood plus consideration of prior to not leave the relevant parameter space
     '''
     lp = log_prior(theta)
     if not np.isfinite(lp):
@@ -100,6 +112,10 @@ def lnprob(theta, x,y,yerr):
 def main(p0,nwalkers,niter,ndim,lnprob,data):
     '''
     running mcmc with set burn in, walkers and iterations
+    Input:
+    Priors,walkers,iterations,dimensions, log probability considering priors, data
+    Output:
+    Final samples and positions of posteriors to get final distributions out 
     '''
     sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=data)
     print("Running burn-in...")
@@ -125,17 +141,27 @@ theta=samples[np.argmax(sampler.flatlnprobability)]#get samples at min likelihoo
 def plotting(model):
     '''
     final plotting and read-out based on the preferred model set by the length of the guess
+    Input:
+    Preferred model:
+    Output:
+    Final plots with MCMC posteriors
     '''
     if model=='2g':
+        for i in range(3,9,3):
+            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r')
         plt.plot(x,r.model_2gauss(theta),color='blue')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_2gauss(theta))**2/(yerr**2)))
     elif model=='3g':
+        for i in range(3,12,3):
+            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r')
         plt.plot(x,r.model_3gauss(theta),color='blue')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_3gauss(theta))**2/(yerr**2)))
     elif model=='1g':
         plt.plot(x,r.model_1gauss(theta),color='blue')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_1gauss(theta))**2/(yerr**2)))
     elif model=='4g':
+        for i in range(3,15,3):
+            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r')
         plt.plot(x,r.model_4gauss(theta),color='blue')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_4gauss(theta))**2/(yerr**2)))
     elif model=='l':
