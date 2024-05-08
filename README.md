@@ -5,7 +5,7 @@ In general, the code will run in two steps. First, the code will read in the fil
 
 In the second step, the MCMC chains are run. In this step, the priors will be set by the guess, and the MCMC chains will be run with default 200 parallelized walkers and 10000 iterations, with a 1000 step burn-in. The final results will be plotted in a corner plot with 1 $\sigma$ errors, and the full values are output to a csv file.
 The code runs through two separate scripts which perform the two relevant tasks using associated command-line arguments.
-To properly run everything, you should have python for the command line install the following non-standard python libraries/modules:
+To properly run everything, you should install the following non-standard python libraries/modules:
 ```
 pip install emcee
 pip install astropy
