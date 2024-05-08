@@ -25,9 +25,9 @@ The command line arguments available for modification in the first step are the 
 * similarly-formatted csv file
 * fits file with the first extension containing a fits file with associated wavelength, flux and error array
 
- ```-z```-The redshift of the object.
+ ```-z``` The redshift of the object.
  
- ```--correction```-The dust correction E(B-V) of the object(often inferred from the Sodium Doublet)
+ ```--correction``` The dust correction E(B-V) of the object(often inferred from the Sodium Doublet)
  
  ```--pm```- The wavelength range over which to define the fitting region(plus or minus from the central wavelength)
  
@@ -37,7 +37,7 @@ The command line arguments available for modification in the first step are the 
 
   ```--plot_limits``` Allows you to change the plot limits for a nicer view as the plots display. Default +/- 10000 km/s
    
-   ```--lorentzian```- Whether you want to fit a lorentzian as opposed to some combination of gaussians. Default False.
+   ```--lorentzian``` Whether you want to fit a lorentzian as opposed to some combination of gaussians. Default False.
 
 If the generated guess seems incorrect, you can re-run the Reading_in.py script with your own guess(in the form of an ascii file) to check whether that gives a decent fit(by eye) with least squares analysis. In general, ensure you have some good estimate for the error in your spectra as this code does not involve generating errors on your spectra(it will assume 10 $\%$ error if there is no error column in the input file).
 
