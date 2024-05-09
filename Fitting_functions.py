@@ -30,11 +30,7 @@ parser.add_argument('--niter', default=10000,type=int,
                     help='number of MCMC iterations')
 parser.add_argument('--guess',help='Best guess file')
 args = parser.parse_args()
-filename=args.filename
-redshift=args.redshift
-lambda_pm=args.pm
 guess=np.loadtxt(args.guess)
-x,y,yerr=r.get_wavelength_vals(filename)
 if len(guess)==6:
     model='2g'
 elif len(guess)==9:
@@ -125,6 +121,7 @@ def main(p0,nwalkers,niter,ndim,lnprob,data):
     print("Running production...")
     pos, prob, state = sampler.run_mcmc(p0, niter)
     return sampler, pos, prob, state
+x,y,yerr=r.get_wavelength_vals(args.filename,args.pm)
 data = (x,y,yerr)
 nwalkers=200
 niter=args.niter
