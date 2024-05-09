@@ -11,6 +11,7 @@ pip install emcee
 pip install astropy
 pip install corner
 pip install dust_extinction
+pip install specutils
 ```
 In the first step, you can run something like this from the command line to get a feel for the data/potential best-fitting model
 
