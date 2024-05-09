@@ -163,7 +163,7 @@ def plotting(model):
     elif model=='4g':
         for i in range(3,15,3):
             plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r')
-        plt.plot(x,r.model_4gauss(theta),color='blue',label='Fit)
+        plt.plot(x,r.model_4gauss(theta),color='blue',label='Fit')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_4gauss(theta))**2/(yerr**2)))
     elif model=='l':
         plt.plot(x,r.model_lorentzian(theta),color='blue',label='Fit')
