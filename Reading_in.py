@@ -244,26 +244,27 @@ if args.guess is None:# if theres no guess lets try everything
     min_chisq=min(chi_array)# check greater than 1 assuming you have good errors-which you should!
     if np.argmin(chi_array)==0:
         print("Our initial least squares guess is a 1 component gaussian with parameters:",fit1[0])
-        plt.plot(x,model_1gauss(fit1[0]),color='r')
+        plt.plot(x,model_1gauss(fit1[0]),color='r',label='model')
     elif np.argmin(chi_array)==1:
         print("Our initial least squares guess is a 2-component gaussian with parameters :",fit2[0])
-        plt.plot(x,model_2gauss(fit2[0]),color='blue')
+        plt.plot(x,model_2gauss(fit2[0]),color='blue',label='model')
         for i in range(3,9,3):
             plt.plot(x,model_1gauss(fit2[0][i-3:i]),color='r')
     elif np.argmin(chi_array)==2:
         print("Our initial least squares guess is a 3 component gaussian with parameters:",fit3[0])
-        plt.plot(x,model_3gauss(fit3[0]),color='r')
+        plt.plot(x,model_3gauss(fit3[0]),color='blue',label='model')
         for i in range(3,12,3):
             plt.plot(x,model_1gauss(fit3[0][i-3:i]),color='r')
     elif np.argmin(chi_array)==3:
         print("Our initial least squares guess is a 4 component gaussian with parameters:",fit4[0])
-        plt.plot(x,model_4gauss(fit4[0]),color='blue')
+        plt.plot(x,model_4gauss(fit4[0]),color='blue',label='model')
         for i in range(3,15,3):
             plt.plot(x,model_1gauss(fit4[0][i-3:i]),color='r')
     elif np.argmin(chi_array)==4:
         print('Our initial least squares guess is a lorentzian with parameters:', fitl[0])
-        plt.plot(x,model_lorentzian(fitl[0]),color='r')
-    plt.plot(x,y,alpha=0.6,color='black')
+        plt.plot(x,model_lorentzian(fitl[0]),color='blue',label='model')
+    plt.plot(x,y,alpha=0.6,color='black',label='data)
+    plt.legend()
     plt.xlabel('Velocity(km/s)')
     plt.ylabel('Flux')
     plt.show()
@@ -272,30 +273,31 @@ elif args.guess is not None:#If we have a guess read it in and do some fitting t
     if len(guess)==6:
         fit = leastsq( two_gaussian_fit, guess)
         print("Final leastsq values=",fit[0])
-        plt.plot(x,model_2gauss(fit[0]),color='blue')
+        plt.plot(x,model_2gauss(fit[0]),color='blue',label='model')
         for i in range(3,9,3):
             plt.plot(x,model_1gauss(fit[0][i-3:i]),color='r')
     elif len(guess)==9:
         fit = leastsq( three_gaussian_fit, guess)
         print("Final leastsq values=",fit[0])
-        plt.plot(x,model_3gauss(fit[0]),color='blue')
+        plt.plot(x,model_3gauss(fit[0]),color='blue',label='model')
         for i in range(3,12,3):
             plt.plot(x,model_1gauss(fit[0][i-3:i]),color='r')
     elif len(guess)==12:
         fit = leastsq( four_gaussian_fit, guess)
         print("Final leastsq values=",fit[0])
-        plt.plot(x,model_4gauss(fit[0]),color='blue')
+        plt.plot(x,model_4gauss(fit[0]),color='blue',label='model')
         for i in range(3,15,3):
             plt.plot(x,model_1gauss(fit[0][i-3:i]),color='r')
     elif len(guess)==3 and args.lorentzian==False:
         fit = leastsq( one_gaussian_fit, guess)
         print("Final leastsq values=",fit[0])
-        plt.plot(x,model_1gauss(fit[0]),color='r')
+        plt.plot(x,model_1gauss(fit[0]),color='blue',label='model)
     else:
         fit = leastsq(lorentzian_fit, guess)
         print("Final leastsq values=",fit[0])
-        plt.plot(x,model_lorentzian(fit[0]),color='r')
-    plt.plot(x,y,alpha=0.6,color='black')
+        plt.plot(x,model_lorentzian(fit[0]),color='blue',label='model')
+    plt.plot(x,y,alpha=0.6,color='black',label='data')
+    plt.legend()
     plt.xlim(-args.plot_limits,args.plot_limits)
     plt.xlabel('Velocity(km/s)')
     plt.ylabel('Flux')
