@@ -149,24 +149,24 @@ def plotting(model):
     '''
     if model=='2g':
         for i in range(3,9,3):
-            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r',label='Model')
-        plt.plot(x,r.model_2gauss(theta),color='blue')
+            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r')
+        plt.plot(x,r.model_2gauss(theta),color='blue',label='Fit')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_2gauss(theta))**2/(yerr**2)))
     elif model=='3g':
         for i in range(3,12,3):
-            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r',label='Model')
-        plt.plot(x,r.model_3gauss(theta),color='blue')
+            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r')
+        plt.plot(x,r.model_3gauss(theta),color='blue',label='Fit')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_3gauss(theta))**2/(yerr**2)))
     elif model=='1g':
-        plt.plot(x,r.model_1gauss(theta),color='blue')
+        plt.plot(x,r.model_1gauss(theta),color='blue',label='Fit')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_1gauss(theta))**2/(yerr**2)))
     elif model=='4g':
         for i in range(3,15,3):
-            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r',label='Model')
-        plt.plot(x,r.model_4gauss(theta),color='blue')
+            plt.plot(x,r.model_1gauss(theta[i-3:i]),color='r')
+        plt.plot(x,r.model_4gauss(theta),color='blue',label='Fit)
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_4gauss(theta))**2/(yerr**2)))
     elif model=='l':
-        plt.plot(x,r.model_lorentzian(theta),color='blue',label='Model')
+        plt.plot(x,r.model_lorentzian(theta),color='blue',label='Fit')
         print('MCMC reduced chi squared=',1/(len(x)-len(theta))*sum((y-r.model_lorentzian(theta))**2/(yerr**2)))
     plt.plot(x,y,color='black',alpha=0.5,label='Data')
     plt.legend()
