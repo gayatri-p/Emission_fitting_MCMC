@@ -18,7 +18,7 @@ In the first step, you can run something like this from the command line to get 
 ```
 python3 Reading_in.py Demo/2020ywx_20220202.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
-This would read in the data and find the emission profile at $H \alpha$, plotting the continuum-subtracted resulting profile in velocity space given a redshift and extinction correction as well as a buffer of 500 Å around the central wavelength for the fit region.  It also generates a guess for the best-fitting model using basic $\chi^2$ analysis. When the plots generate and you have had a look, close them to allow the code to continue running.
+This would read in the data and find the emission profile at $H \alpha$, plotting the continuum-subtracted resulting profile in velocity space given a redshift and extinction correction as well as a buffer of 500 Å around the central wavelength for the fit region.  It also generates a guess for the best-fitting model using basic $\chi^2$ analysis. When the plots are displayed and you have had a look, close them to allow the code to continue running.
 The command line arguments available for modification in the first step are the following:
 
 ```filename```-The name of the file input. The file must be in one of a couple possible formats(ensure it is in an accessible path from wherever you are running the code):
