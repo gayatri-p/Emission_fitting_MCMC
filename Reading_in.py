@@ -263,7 +263,7 @@ if args.guess is None:# if theres no guess lets try everything
     elif np.argmin(chi_array)==4:
         print('Our initial least squares guess is a lorentzian with parameters:', fitl[0])
         plt.plot(x,model_lorentzian(fitl[0]),color='blue',label='model')
-    plt.plot(x,y,alpha=0.6,color='black',label='data)
+    plt.plot(x,y,alpha=0.6,color='black',label='data')
     plt.legend()
     plt.xlabel('Velocity(km/s)')
     plt.ylabel('Flux')
@@ -291,7 +291,7 @@ elif args.guess is not None:#If we have a guess read it in and do some fitting t
     elif len(guess)==3 and args.lorentzian==False:
         fit = leastsq( one_gaussian_fit, guess)
         print("Final leastsq values=",fit[0])
-        plt.plot(x,model_1gauss(fit[0]),color='blue',label='model)
+        plt.plot(x,model_1gauss(fit[0]),color='blue',label='model')
     else:
         fit = leastsq(lorentzian_fit, guess)
         print("Final leastsq values=",fit[0])
