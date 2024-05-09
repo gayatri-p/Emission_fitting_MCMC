@@ -228,7 +228,7 @@ def get_wavelength_vals(filename,lambda_pm):
 x,y,e=get_wavelength_vals(args.filename,args.pm)
 if args.guess is None:# if theres no guess lets try everything
     fit1 = leastsq( one_gaussian_fit, [1,0,100] )
-    fit2 = leastsq( two_gaussian_fit, [0.1,10,100,0.1,10,100] )
+    fit2 = leastsq( two_gaussian_fit, [0.1,0,100,0.1,10,100] )
     fit3 = leastsq( three_gaussian_fit, [0.1,10,100,0.1,10,100,0.1,10,100] )
     fit4 = leastsq( four_gaussian_fit, [0.1,10,1000,0.1,10,500,0.1,10,100,0.1,1000,100] )
     fitl = leastsq( lorentzian_fit, [0,10,100] )
@@ -238,7 +238,6 @@ if args.guess is None:# if theres no guess lets try everything
     chi4=1/(len(y)-len(fit4[0]))*sum((y-model_4gauss(fit4[0]))**2/e**2)
     chi5=1/(len(y)-len(fitl[0]))*sum((y-model_lorentzian(fitl[0]))**2/e**2)
     chi_array=np.array([chi1,chi2,chi3,chi4,chi5])
-    print(chi_array)
     min_chisq=min(chi_array)# check greater than 1 assuming you have good errors-which you should!
     if np.argmin(chi_array)==0:
         print("Our initial least squares guess is a 1 component gaussian with parameters:",fit1[0])
