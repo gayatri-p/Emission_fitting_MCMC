@@ -138,14 +138,11 @@ def lorentzian_fit(params):
     '''
     fit = model_lorentzian(params)
     return (fit - y)
-filename=args.filename
-redshift=args.redshift
-lambda_pm=args.pm#setting all relevant values for reading in data
-def get_specdata(filename):
+def get_specdata(filename,redshift):
     '''
     Read in file depending on what format it is in and output wavelength/flux/error
     Inputs:
-    File in format ascii,csv,fits file
+    File in format ascii,csv,fits file,redshift
     Output:
     wavelength,flux,error arrays-error assumed to be 0.1*flux if not supplied
     '''
@@ -191,16 +188,16 @@ def get_specdata(filename):
             flux=np.append(flux,data.iloc[:,1][i])
             error=np.append(error,data.iloc[:,2][i])
     return wavelength,flux,error
-def get_wavelength_vals(filename):
+def get_wavelength_vals(filename,lambda_pm):
     '''
     Read out data and convert to the desired units
-    Takes in a file and gives x in velocity, y in flux(in 1e-15 ergs/s/cm2/A) and y errors in the same unit
+    Takes in a file and region over which to fit and gives x in velocity, y in flux(in 1e-15 ergs/s/cm2/A) and y errors in the same unit
     Inputs:
     Spectral File
     Outputs:
     Velocity,continuum-subtracted flux,flux error
     '''
-    l,f,e=get_specdata(filename)
+    l,f,e=get_specdata(args.filename,args.redshift)
     #get lambda, flux,error from data file
     if args.continuum_sub==True:#check that continuum subtraction is desired
         Rv=3.1
@@ -228,7 +225,7 @@ def get_wavelength_vals(filename):
         y=f
         yerr=e
     return x,y,yerr    
-x,y,e=get_wavelength_vals(filename)
+x,y,e=get_wavelength_vals(args.filename,args.pm)
 if args.guess is None:# if theres no guess lets try everything
     fit1 = leastsq( one_gaussian_fit, [1,0,100] )
     fit2 = leastsq( two_gaussian_fit, [0.1,10,100,0.1,10,100] )
