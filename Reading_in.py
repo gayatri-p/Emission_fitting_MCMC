@@ -33,7 +33,7 @@ parser.add_argument('--continuum_sub', default=True,
 parser.add_argument('--lorentzian', default=False,
                     help='Input True if Lorentzian guess')
 args = parser.parse_args()
-def model_4gauss(theta):
+def model_4gauss(theta):#Create relevant models
     '''
     Fit 4 Gaussian model
     Inputs:
@@ -226,6 +226,7 @@ def get_wavelength_vals(filename,lambda_pm):
         yerr=e
     return x,y,yerr    
 x,y,e=get_wavelength_vals(args.filename,args.pm)
+print(x,y)
 if args.guess is None:# if theres no guess lets try everything
     fit1 = leastsq( one_gaussian_fit, [1,0,100] )
     fit2 = leastsq( two_gaussian_fit, [0.1,10,100,0.1,10,100] )
@@ -262,6 +263,7 @@ if args.guess is None:# if theres no guess lets try everything
         plt.plot(x,model_lorentzian(fitl[0]),color='blue',label='fit')
     plt.plot(x,y,alpha=0.6,color='black',label='data')
     plt.legend()
+    plt.xlim(-args.plot_limits,args.plot_limits)
     plt.xlabel('Velocity(km/s)')
     plt.ylabel('Flux')
     plt.show()
