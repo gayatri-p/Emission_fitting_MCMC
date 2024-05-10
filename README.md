@@ -52,4 +52,4 @@ python3 Fitting_functions.py Demo/2020ywx_20220202.txt --guess Demo/guess_0202.t
 
 The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. The code should take ~ <5 minutes to run. An MCMC corner plot will show in the python window if you have the matplotlib widget, but it should be easier to look at this through the output .png file.
 The final outputs are a corner plot that will save as a .png file(MCMC.png) as well as a csv file with the final posterior distributions and upper and lower errorbars($\pm 1 \sigma$) saved as Final_results.csv.  The reduced $\\chi^2$ will also be output which one can use as a guide to perhaps consider a different model(which you could set by inputting a different guess-i.e. for the example presented here a 3-gaussian works slightly better if input). 
-To view some tests/familiarize yourself with the code further, check out the Wiki.
+$\textbf{To view some tests/familiarize yourself with the code further, check out the Wiki.}$
