@@ -46,7 +46,7 @@ In the next step, you run the following command to do the fitting with MCMC with
 ```
 python3 Fitting_functions.py Demo/2020ywx_20220202.txt --guess Demo/guess_0202.txt -z 0.0217 --correction 0.023 --pm 500 --wavelength 6563
 ```
-\textbf{This step requires a guess to run}. This script will run through the first script as well as it uses functions from this, so you can quit before the MCMC run if something looks off. This second script takes the same command line arguments with one addition: 
+$\textbf{This step requires a guess to run}$. This script will run through the first script as well as it uses functions from this, so you can quit before the MCMC run if something looks off. This second script takes the same command line arguments with one addition: 
 
  ```--niter``` The number of MCMC iterations you want to run. Defaults to 10000. Could be modified given some strange behavior of the chains.
 
