@@ -3,7 +3,7 @@ This repo contains Python code that does MCMC-based fitting to emission line pro
 
 In general, the code will run in two steps. First, the code will read in the file and convert the wavelength to velocity space, then make a least-squares based guess as to the best-fitting model to the relevant emission line, whether that be a multi-component gaussian or single lorentzian(These are the available models given the expected profiles in supernova spectra). The code will output the best-fit values, which the user can then use as a "guess" for the next step, which is MCMC fitting to the emission line to determine parameters with full posterior distributions and thus associated errors. The initial step will also output a plot of the emission line in velocity space so that the user can determine their own guess.
 
-In the second step, the MCMC chains are run. In this step, the priors will largely be set by the guess, and the MCMC chains will be run with default 200 parallelized walkers and 10000 iterations, with a 1000 step burn-in. The final posterior distributions are plotted in a corner plot with 1 $\sigma$ errors, and the values are output to a csv file.
+In the second step, the MCMC chains are run. In this step, the priors will largely be set by the guess, and the MCMC chains will be run with default 200 parallelized walkers and 10000 iterations, with a 1000 step burn-in. The final posterior distributions are plotted in a corner plot with 1 $\sigma$ errors, and the best-fit values are output to a csv file.
 The code runs through two separate scripts which perform the two relevant tasks using associated command-line arguments.
 To properly run everything, you should install the following non-standard python libraries/modules:
 ```
