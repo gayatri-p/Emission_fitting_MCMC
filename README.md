@@ -1,4 +1,4 @@
-# MCMC-spectra
+# MCMC-Emission-fitting
 This repo contains Python code that does MCMC-based fitting to emission line profiles in astronomical spectra, largely aimed at supernova spectra but certainly with utility for other kinds of objects.
 
 In general, the code will run in two steps. First, the code will read in the file and convert the wavelength to velocity space, then make a least-squares based guess as to the best-fitting model to the relevant emission line, whether that be a multi-component gaussian or single lorentzian(These are the available models given the expected profiles in supernova spectra). The code will output the best-fit values, which the user can then use as a "guess" for the next step, which is MCMC fitting to the emission line to determine parameters with full posterior distributions and thus associated errors. The initial step will also output a plot of the emission line in velocity space so that the user can determine their own guess.
