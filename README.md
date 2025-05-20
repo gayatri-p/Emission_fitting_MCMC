@@ -1,4 +1,7 @@
 # MCMC-Emission-fitting
+
+[Changelog!](#changelog)
+
 This repo contains Python code that does MCMC-based fitting to emission line profiles in astronomical spectra, largely aimed at supernova spectra but certainly with utility for other kinds of objects.
 
 In general, the code will run in two steps. First, the code will read in the file and convert the wavelength to velocity space, then make a least-squares based guess as to the best-fitting model to the relevant emission line, whether that be a multi-component gaussian or single lorentzian(These are the available models given the expected profiles in supernova spectra). The code will output the best-fit values, which the user can then use as a "guess" for the next step, which is MCMC fitting to the emission line to determine parameters with full posterior distributions and thus associated errors. The initial step will also output a plot of the emission line in velocity space so that the user can determine their own guess.
@@ -51,5 +54,17 @@ $\textbf{This step requires a guess to run}$. This script will run through the f
  ```--niter``` The number of MCMC iterations you want to run. Defaults to 10000. Could be modified given some strange behavior of the chains.
 
 The code will check for autocorrelation by ensuring the number of iterations is 40x the autocorrelation time for each parameter. The code should take ~ <5 minutes to run. An MCMC corner plot will show in the python window if you have the matplotlib widget, but it should be easier to look at this through the output .png file.
-The final outputs are a corner plot as well as a plot of the data with the best fit model that will save as .png files(MCMC.png/Fitted.png) as well as a csv file with the final posterior distributions and upper and lower errorbars($\pm 1 \sigma$) saved as Final_results.csv.  The reduced $\\chi^2$ will also be output which one can use as a guide to perhaps consider a different model(which you could set by inputting a different guess-i.e. for the example presented here a 3-gaussian works slightly better if input). 
+The final outputs are a corner plot as well as a plot of the data with the best fit model that will save as .png files(MCMC.png/Fitted.png) as well as a csv file with the final posterior distributions and upper and lower errorbars($\pm 1 \sigma$) saved as Final_results.csv.  The reduced $\chi^2$ will also be output which one can use as a guide to perhaps consider a different model(which you could set by inputting a different guess-i.e. for the example presented here a 3-gaussian works slightly better if input). 
 $\textbf{To view some tests/familiarize yourself with the code further, check out the Wiki.}$
+
+## Changelog
+
+`1dfit.py` file combines the functionalities of the above code to specifically fit a 1D gaussian. It generates a guess and feeds it directly into the MCMC fitting function. The guess parameters are shown to the user and the user is prompted to either proceed with the iterations or abort based on the goodness of the parameters. The code generates two output files - a $\chi^2$-fit over the spectrum data and a 1D posterior distribution of the MCMC fit.
+
+An example usage with the Si II line at 6355 $\textup{\AA}$ is given below. This was build mostly to reduce waiting time and automate the process for a large number of photospheric velocity extraction from SN spectra.
+
+```
+python3.8 mcmc.py 2012Z_2012-02-02_Lick-3m_KAST.ascii -z 0.007 --pm 350 --wavelength 6355 --output 2012Z_2Feb --correction 0.0156 --scaling 1e-7
+```
+
+Thanks to [@18rway](https://github.com/18rway)!
